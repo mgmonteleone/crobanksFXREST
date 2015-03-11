@@ -14,7 +14,7 @@ For now only the data file based banks (fixed width and XML) are covered, but wi
 
 ## Usage
 
-http://fx.autautrocks/[bankname|all]
+http://fx.autaut.rocks/[bankname|all]
 
 will return the current days data from the bank sites (if any).
 
