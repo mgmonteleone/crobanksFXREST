@@ -1,0 +1,4 @@
+simplejson
+jsonpickle
+cElementTree
+cutplace
