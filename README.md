@@ -20,7 +20,7 @@ will return the current days data from the bank sites (if any).
 
 # Return format.
 
-
+```json
 {
    "fxdate": {
       "$date": 1426053880719
@@ -71,4 +71,5 @@ will return the current days data from the bank sites (if any).
    ],
    "info": "Croatian Bank Exchange Rates Data - Brought to you by Aut Aut"
 }
+```
  
