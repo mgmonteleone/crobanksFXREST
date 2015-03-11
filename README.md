@@ -10,8 +10,6 @@
 For now only the data file based banks (fixed width and XML) are covered, but will do the rest soon.
 
 
-
-
 ## Usage
 
 http://fx.autaut.rocks/[bankname|all]
