@@ -1,8 +1,6 @@
 __author__ = 'matthewgmonteleone'
-from urllib2 import Request, urlopen, URLError, HTTPError
+from urllib2 import urlopen, URLError
 import xmltodict
-from pprint import pprint
-from datetime import datetime
 url = "http://local.erstebank.hr/alati/SaveAsXML.aspx?ime=TL_20150310.xml"
 from library import *
 from decimal import *

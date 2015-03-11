@@ -1,9 +1,5 @@
 __author__ = 'matthewgmonteleone'
-
-
-from urllib2 import Request, urlopen, URLError, HTTPError
-from pprint import pprint
-from datetime import datetime, tzinfo
+from urllib2 import urlopen, URLError, HTTPError
 from library import *
 
 

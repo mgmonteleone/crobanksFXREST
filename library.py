@@ -1,5 +1,4 @@
 __author__ = 'matthewgmonteleone'
-from collections import OrderedDict
 from bson import json_util
 import simplejson
 from datetime import datetime

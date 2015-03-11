@@ -1,4 +1,4 @@
 simplejson
-jsonpickle
-cElementTree
-cutplace
+flask
+xmltodict
+simplejson

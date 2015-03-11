@@ -4,7 +4,7 @@ from xmlbased import get_erste_today, get_pbz_today, get_otp_today
 from fixwidthbased import get_zaba_today, get_hnb_today
 from library import *
 from flask import Flask
-from flask import make_response, request, Response
+from flask import make_response
 import simplejson
 
 app = Flask(__name__)
