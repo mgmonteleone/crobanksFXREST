@@ -10,17 +10,15 @@
 For now only the data file based banks (fixed width and XML) are covered, but will do the rest soon.
 
 
-
-
 ## Usage
 
-http://fx.autautrocks/[bankname|all]
+http://fx.autaut.rocks/[bankname|all]
 
 will return the current days data from the bank sites (if any).
 
 # Return format.
 
-
+```json
 {
    "fxdate": {
       "$date": 1426053880719
@@ -71,4 +69,5 @@ will return the current days data from the bank sites (if any).
    ],
    "info": "Croatian Bank Exchange Rates Data - Brought to you by Aut Aut"
 }
+```
  
