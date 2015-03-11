@@ -104,7 +104,6 @@ def get_otp_today():
             rates = list()
             ratedata = xmldict["TecajnaLista"]["Valute"]["Valuta"]
             for rateraw in ratedata:
-                print simplejson.dumps(rateraw)
                 rate = Rate(
                     codenum = rateraw["Sifra"]
                     ,codeiso= rateraw["Oznaka"]

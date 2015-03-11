@@ -1,8 +1,8 @@
 __author__ = 'matthewgmonteleone'
-from bson import json_util
 import simplejson
 from datetime import datetime
 from decimal import *
+from bson import json_util
 class Rate():
     def __init__(self,codenum=None
                  ,codeiso=None

@@ -3,3 +3,4 @@ flask
 xmltodict
 pymongo
 mongoengine
+flask-swagger
