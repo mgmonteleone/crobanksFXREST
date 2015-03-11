@@ -1,4 +1,5 @@
 simplejson
 flask
 xmltodict
-simplejson
+pymongo
+mongoengine
