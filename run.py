@@ -38,7 +38,8 @@ def send_js(path):
 def getbank(bank):
     """
     Data per bank
-    FX data for one or more banks.
+    FX data for one or more banks. Pull the lastest data from various web sites are returns in a single, unified
+    json object.
     ---
     parameters:
         - name: bank
@@ -49,10 +50,14 @@ def getbank(bank):
     responses:
         200:
             description: An object incuding current exchange info
+            produces:
+                - application/json
+                - application/xml
             schema:
                 id: fxobject
                 title: An fx object.
                 type: object
+                name : Foriegn exchange data.
                 properties:
                     fxdate:
                         type: string
@@ -64,11 +69,18 @@ def getbank(bank):
                     banks:
                         type: array
                         items:
+                            id: bank
                             title: a bank
                             type: object
                             properties:
                                 status:
                                     type: string
+                                fetchurl:
+                                    type: string
+                                rates:
+                                    type: array
+                                    items:
+                                        id: rates
 
 
     """
