@@ -4,3 +4,4 @@ xmltodict
 pymongo
 mongoengine
 flask-swagger
+BeautifulSoup
