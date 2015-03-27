@@ -1,6 +1,7 @@
 __author__ = 'matthewgmonteleone'
 # coding=UTF-8
 from xmlbased import get_erste_today, get_pbz_today, get_otp_today
+from htmlbased import get_rba_today
 from fixwidthbased import get_zaba_today, get_hnb_today
 from library import *
 from flask import Flask
@@ -20,7 +21,8 @@ def listavail():
         {"Zagrebačka banka d.d.": "/zaba"},
         {"OTP banka d.d.": "/otp"},
         {"Privredna Banka Zagreb": "/pbz"},
-        {"Hrvatska Narodna Banka": "/hnb"}
+        {"Hrvatska Narodna Banka": "/hnb"},
+        {"Raiffaisen Banka": "/rba"}
     ]
     return simplejson.dumps(avail,encoding="UTF-8")
 
@@ -45,14 +47,13 @@ def getbank(bank):
         - name: bank
           in: path
           type: string
-          enum: ["all","pbz","hnb","otp","zaba","erste"]
+          enum: ["all","pbz","hnb","otp","zaba","erste","rba"]
           description : the short code for the bank to return, for all banks.
     responses:
-        200:
-            description: An object incuding current exchange info
+        "200":
+            description: An object including current exchange info
             produces:
                 - application/json
-                - application/xml
             schema:
                 id: fxobject
                 title: An fx object.
@@ -66,21 +67,7 @@ def getbank(bank):
                     info:
                         description: if regarding the result set.
                         type: string
-                    banks:
-                        type: array
-                        items:
-                            id: bank
-                            title: a bank
-                            type: object
-                            properties:
-                                status:
-                                    type: string
-                                fetchurl:
-                                    type: string
-                                rates:
-                                    type: array
-                                    items:
-                                        id: rates
+
 
 
     """
@@ -100,6 +87,9 @@ def getbank(bank):
     if bank in ["hnb","all"]:
         hnb = get_hnb_today()
         banks.append(hnb.__dict__)
+    if bank in ["rba","all"]:
+        rba = get_rba_today()
+        banks.append(rba.__dict__)
 
     fxdata = FxData(
        banks =banks

@@ -55,9 +55,9 @@ def get_hnb_today():
                             ,codeiso=line[3:6].strip()
                             ,multiply= int(line[6:9].strip())
                             ,buy_cc= 0
-                            ,buy_exchange= fixcommas(line[9:24].strip())
-                            ,middle= fixcommas(line[25:39].strip())
-                            ,sell_exchange = fixcommas(line[40:55].strip())
+                            ,buy_exchange= stringToDecimal(line[9:24].strip())
+                            ,middle= stringToDecimal(line[25:39].strip())
+                            ,sell_exchange = stringToDecimal(line[40:55].strip())
                             ,sell_cc = 0
                 )
 

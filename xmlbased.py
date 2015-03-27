@@ -108,11 +108,11 @@ def get_otp_today():
                     codenum = rateraw["Sifra"]
                     ,codeiso= rateraw["Oznaka"]
                     ,multiply=int(rateraw["Jedinica"])
-                    ,buy_cc=Decimal(fixcommas(rateraw["KupovniEfektiva"]))
-                    ,buy_exchange=Decimal(fixcommas(rateraw["KupovniDevize"]))
-                    ,middle=Decimal(fixcommas(rateraw["Srednji"]))
-                    ,sell_cc=Decimal(fixcommas(rateraw["ProdajniEfektiva"]))
-                    ,sell_exchange=Decimal(fixcommas(rateraw["ProdajniDevize"]))
+                    ,buy_cc=Decimal(stringToDecimal(rateraw["KupovniEfektiva"]))
+                    ,buy_exchange=Decimal(stringToDecimal(rateraw["KupovniDevize"]))
+                    ,middle=Decimal(stringToDecimal(rateraw["Srednji"]))
+                    ,sell_cc=Decimal(stringToDecimal(rateraw["ProdajniEfektiva"]))
+                    ,sell_exchange=Decimal(stringToDecimal(rateraw["ProdajniDevize"]))
                 )
                 rates.append(rate.__dict__)
         except URLError as e:

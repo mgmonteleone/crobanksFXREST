@@ -3,13 +3,16 @@ import simplejson
 from datetime import datetime
 from decimal import *
 from bson import json_util
+import httplib2, time
+import ssl
+from functools import wraps
 class Rate():
     def __init__(self,codenum=None
                  ,codeiso=None
-                 ,multiply=None,buy_cc=None
-                 ,buy_exchange=None
-                 ,middle=None
-                 ,sell_exchange=None,sell_cc=None):
+                 ,multiply=1,buy_cc=0
+                 ,buy_exchange=0
+                 ,middle=0
+                 ,sell_exchange=0,sell_cc=0):
         self.codenum = codenum
         self.codeiso = codeiso
         self.multiply = multiply
@@ -51,8 +54,41 @@ class FxData():
 def returnJSON(data):
     return simplejson.dumps(data.__dict__,default=json_util.default,indent=3)
 
-def fixcommas(string):
-    if type(string) is str:
-        return string.replace(",",".")
+def stringToDecimal(string):
+    if type(string) in (str,unicode):
+        return Decimal(string.replace(",","."))
     else:
+        print type(string)
         return 0
+
+SCRAPING_CONN = httplib2.Http(".cache")
+SCRAPING_CACHE_FOR = 60 * 15 # cache for 15 minutes
+SCRAPING_CACHE = {}
+
+
+def fetch(url,method="GET"):
+    """
+    Fetches a URL for scraping, using cache to facilitate "humane" Scraping
+    Credit to: http://tinyurl.com/pbkuow8
+    :param url: The URL To be scraped
+    :param method: The method to be used for scraping, defaults to GET
+    :return: a HTTPLib object, page content  is in [1]
+    """
+    key = (url,method)
+    now = time.time()
+    if SCRAPING_CACHE.has_key(key):
+        data,cached_at = SCRAPING_CACHE[key]
+        if now - cached_at < SCRAPING_CACHE_FOR:
+            print "Getting From Cache"
+            return data
+    data = SCRAPING_CONN.request(url,method)
+    SCRAPING_CACHE[key] = (data,now)
+    return data
+
+
+def sslwrap(func):
+    @wraps(func)
+    def bar(*args, **kw):
+        kw['ssl_version'] = ssl.PROTOCOL_TLSv1
+        return func(*args, **kw)
+    return bar
