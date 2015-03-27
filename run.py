@@ -1,8 +1,7 @@
-__author__ = 'matthewgmonteleone'
 # coding=UTF-8
 from xmlbased import get_erste_today, get_pbz_today, get_otp_today
-from htmlbased import get_rba_today
-from fixwidthbased import get_zaba_today, get_hnb_today
+from htmlbased import get_rba_today, get_hypo_today
+from fixwidthbased import get_zaba_today, get_hnb_today, get_splitska_today
 from library import *
 from flask import Flask
 from flask import make_response, jsonify, send_from_directory
@@ -22,7 +21,9 @@ def listavail():
         {"OTP banka d.d.": "/otp"},
         {"Privredna Banka Zagreb": "/pbz"},
         {"Hrvatska Narodna Banka": "/hnb"},
-        {"Raiffaisen Banka": "/rba"}
+        {"Raiffaisen Banka": "/rba"},
+        {"SOCIETE GENERALE- SPLITSKA BANKA d.d. Split": "/splitska"},
+         {"HYPO ALPE-ADRIA-BANK d.d. Zagreb": "/hypo"}
     ]
     return simplejson.dumps(avail,encoding="UTF-8")
 
@@ -47,7 +48,7 @@ def getbank(bank):
         - name: bank
           in: path
           type: string
-          enum: ["all","pbz","hnb","otp","zaba","erste","rba"]
+          enum: ["all","pbz","hnb","otp","zaba","erste","rba","splitska","hypo"]
           description : the short code for the bank to return, for all banks.
     responses:
         "200":
@@ -90,6 +91,12 @@ def getbank(bank):
     if bank in ["rba","all"]:
         rba = get_rba_today()
         banks.append(rba.__dict__)
+    if bank in ["splitska","all"]:
+        splitska = get_splitska_today()
+        banks.append(splitska.__dict__)
+    if bank in ["hypo","all"]:
+        hypo = get_hypo_today()
+        banks.append(hypo.__dict__)
 
     fxdata = FxData(
        banks =banks

@@ -61,7 +61,22 @@ def stringToDecimal(string):
         print type(string)
         return 0
 
-SCRAPING_CONN = httplib2.Http(".cache")
+
+class Cache(dict):
+    """
+    A simple cache object to be able to do in memory caching
+    """
+
+    def set(self, key, value):
+        self.__setitem__(key, value)
+
+    def delete(self, key):
+        self.__delitem__(key)
+
+    def __nonzero__(self):
+        return True
+
+SCRAPING_CONN = httplib2.Http(Cache())
 SCRAPING_CACHE_FOR = 60 * 15 # cache for 15 minutes
 SCRAPING_CACHE = {}
 
@@ -92,3 +107,5 @@ def sslwrap(func):
         kw['ssl_version'] = ssl.PROTOCOL_TLSv1
         return func(*args, **kw)
     return bar
+
+

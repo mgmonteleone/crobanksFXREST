@@ -1,14 +1,21 @@
-# Croatian Bank Foriegn Exchange Rates Aggregated RESTfull service#
+# Croatian Bank Foreign Exchange Rates Aggregated RESTfull service#
 
 * Croatian banks havea hodge podge of solutions for publishing their daily exchange rates.
 ** Fixed length data files
 ** XML files
 ** Just web pages
 
-- Built this microservice so we dont have to check all over the place....
+- Built this MicroService so we don't have to check all over the place....
 
-For now only the data file based banks (fixed width and XML) are covered, but will do the rest soon.
+XML, Fixed text file and HTML data sources.
 
+## Banks Supported
+* RBA
+* Erste
+* PBZ
+* ZABA
+* OTP
+* HNB
 
 ## Usage
 
