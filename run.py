@@ -1,7 +1,7 @@
 # coding=UTF-8
 from xmlbased import get_erste_today, get_pbz_today, get_otp_today
 from htmlbased import get_rba_today, get_hypo_today, get_hpb_today
-from fixwidthbased import get_zaba_today, get_hnb_today, get_splitska_today
+from txtbased import get_zaba_today, get_hnb_today, get_splitska_today, get_sber_today
 from library import *
 from flask import Flask
 from flask import make_response, jsonify, send_from_directory
@@ -101,12 +101,16 @@ def getbank(bank):
     if bank in ["hpb","all"]:
         hpb = get_hpb_today()
         banks.append(hpb.__dict__)
+    if bank in ["sber","all"]:
+        sber = get_sber_today()
+        banks.append(sber.__dict__)
 
     fxdata = FxData(
        banks =banks
     )
-
-    return make_response(returnJSON(fxdata))
+    jsonheader = {"Content-Type": "application/json"}
+    theresponse = make_response(returnJSON(fxdata),200,jsonheader)
+    return theresponse
 
 
 @app.route("/swagger.json")
