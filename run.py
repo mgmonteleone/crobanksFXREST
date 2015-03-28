@@ -1,5 +1,5 @@
 # coding=UTF-8
-from xmlbased import get_erste_today, get_pbz_today, get_otp_today
+from xmlbased import get_erste_today, get_pbz_today, get_otp_today, get_kbz_today
 from htmlbased import get_rba_today, get_hypo_today, get_hpb_today
 from txtbased import get_zaba_today, get_hnb_today, get_splitska_today, get_sber_today
 from library import *
@@ -51,7 +51,10 @@ def listavail():
         {"Raiffaisen Banka": "/rba"},
         {"SOCIETE GENERALE- SPLITSKA BANKA d.d. Split": "/splitska"},
         {"HYPO ALPE-ADRIA-BANK d.d. Zagreb": "/hypo"},
-        {"HRVATSKA POŠTANSKA BANKA d.d. Zagreb": "/hpb"}
+        {"HRVATSKA POŠTANSKA BANKA d.d. Zagreb": "/hpb"},
+        {"Kreditna banka Zagreb d.d.": "/kbz"},
+        {"Sberbank d.d.": "/sber"},
+
     ]
     return simplejson.dumps(avail,encoding="UTF-8")
 
@@ -77,7 +80,7 @@ def getbank(bank):
         - name: bank
           in: path
           type: string
-          enum: ["all","pbz","hnb","otp","zaba","erste","rba","splitska","hypo"]
+          enum: ["all","pbz","hnb","otp","zaba","erste","rba","splitska","hypo","sber","kbz","hpb"]
           description : the short code for the bank to return, for all banks.
     responses:
         "200":
@@ -132,7 +135,9 @@ def getbank(bank):
     if bank in ["sber","all"]:
         sber = get_sber_today()
         banks.append(sber.__dict__)
-
+    if bank in ["kbz","all"]:
+        kbz = get_kbz_today()
+        banks.append(kbz.__dict__)
     fxdata = FxData(
        banks =banks
     )

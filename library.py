@@ -1,6 +1,6 @@
 __author__ = 'matthewgmonteleone'
 import simplejson
-from datetime import datetime
+from datetime import datetime, date
 from decimal import *
 from bson import json_util
 import httplib2, time
@@ -8,13 +8,15 @@ import ssl
 from StringIO import StringIO
 
 from functools import wraps
+
+
 class Rate():
-    def __init__(self,codenum=None
-                 ,codeiso=None
-                 ,multiply=1,buy_cc=0
-                 ,buy_exchange=0
-                 ,middle=0
-                 ,sell_exchange=0,sell_cc=0):
+    def __init__(self, codenum=None
+                 , codeiso=None
+                 , multiply=1, buy_cc=0
+                 , buy_exchange=0
+                 , middle=0
+                 , sell_exchange=0, sell_cc=0):
         self.codenum = codenum
         self.codeiso = codeiso
         self.multiply = multiply
@@ -39,26 +41,38 @@ class Rate():
         except InvalidOperation:
             self.sell_cc = sell_cc
 
+
 class Bank():
-    def __init__(self,rates=None,bankname=None,fetchstatus="OK"
-                 ,statusdetail=None,fetchurl=None):
+    def __init__(self, rates=None, bankname=None, fetchstatus="OK"
+                 , statusdetail=None
+                 , fetchurl=None
+                 , effectivedate = None
+                 , setdate = None):
         self.rates = rates
         self.bankname = bankname
         self.status = fetchstatus
         self.statusdetail = statusdetail
         self.fetchurl = fetchurl
+        self.effectivedate = effectivedate
+        self.setdate = setdate
+
 
 class FxData():
-    def __init__(self,fxdate=datetime.now(),banks=None):
-        self.fxdate=fxdate
-        self.banks=banks
+    def __init__(self, fxdate=datetime.now()
+                 , banks=None
+                 ):
+        self.fxdate = fxdate
+        self.banks = banks
         self.info = "Croatian Bank Exchange Rates Data - Brought to you by Aut Aut"
+
+
 def returnJSON(data):
-    return simplejson.dumps(data.__dict__,default=json_util.default,indent=3)
+    return simplejson.dumps(data.__dict__, default=json_util.default, indent=3)
+
 
 def stringToDecimal(string):
-    if type(string) in (str,unicode):
-        return Decimal(string.replace(",",".").replace("-","0"))
+    if type(string) in (str, unicode):
+        return Decimal(string.replace(",", ".").replace("-", "0"))
     else:
         print type(string)
         return 0
@@ -78,12 +92,13 @@ class Cache(dict):
     def __nonzero__(self):
         return True
 
+
 SCRAPING_CONN = httplib2.Http(Cache())
-SCRAPING_CACHE_FOR = 60 * 15 # cache for 15 minutes
+SCRAPING_CACHE_FOR = 60 * 15  # cache for 15 minutes
 SCRAPING_CACHE = {}
 
 
-def fetch(url,method="GET"):
+def fetch(url, method="GET"):
     """
     Fetches a URL for scraping, using cache to facilitate "humane" Scraping
     Credit to: http://tinyurl.com/pbkuow8
@@ -91,15 +106,15 @@ def fetch(url,method="GET"):
     :param method: The method to be used for scraping, defaults to GET
     :return: a HTTPLib object, page content  is in [1]
     """
-    key = (url,method)
+    key = (url, method)
     now = time.time()
     if SCRAPING_CACHE.has_key(key):
-        data,cached_at = SCRAPING_CACHE[key]
+        data, cached_at = SCRAPING_CACHE[key]
         if now - cached_at < SCRAPING_CACHE_FOR:
             print "Getting From Cache"
             return data
-    data = SCRAPING_CONN.request(url,method)
-    SCRAPING_CACHE[key] = (data,now)
+    data = SCRAPING_CONN.request(url, method)
+    SCRAPING_CACHE[key] = (data, now)
     return data
 
 
@@ -108,6 +123,7 @@ def sslwrap(func):
     def bar(*args, **kw):
         kw['ssl_version'] = ssl.PROTOCOL_TLSv1
         return func(*args, **kw)
+
     return bar
 
 
