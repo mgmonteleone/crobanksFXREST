@@ -63,7 +63,7 @@ class FxData():
                  ):
         self.fxdate = fxdate
         self.banks = banks
-        self.info = "Croatian Bank Exchange Rates Data - Brought to you by Aut Aut"
+        self.info = "Croatian Bank Exchange Rates Data - Brought to you by b.Social"
 
 
 def returnJSON(data):
