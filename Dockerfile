@@ -4,4 +4,4 @@ ADD . /app
 RUN pip install -r /app/requirements.txt
 EXPOSE 5000
 WORKDIR /app
-CMD gunicorn --config unicorn.conf.py --log-file=-. run:app
+CMD gunicorn --config unicorn.conf.py --log-file=-. --forwarded-allow-ips="*" run:app
