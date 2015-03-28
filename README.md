@@ -16,6 +16,11 @@ XML, Fixed text file and HTML data sources.
 * ZABA
 * OTP
 * HNB
+* HPB
+* ZKB
+* Hypo
+* Splitska
+* Sberbanka
 
 ## Usage
 
