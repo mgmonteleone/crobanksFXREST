@@ -93,4 +93,41 @@ def get_hypo_today():
     bank = Bank(rates=rates_retrieved,bankname="HYPO",statusdetail=info,fetchurl=url)
     return bank
 
+def get_hpb_today():
+    """
+    Retrieves the current days exchange rates from the hypo web site, returns bank object
+
+    :return: Bank object.
+    """
+    url = "http://www.hpb.hr/?hr=mod.exchange-rates"
+    page = fetch(url)
+    soup = BeautifulSoup(page[1])
+    info = page[0]
+    if info["status"] not in ("200","304"):
+        bank= Bank(rates=None,bankname="HPB",fetchstatus="ERROR",statusdetail=info
+                    ,fetchurl=url)
+        return bank
+    thediv= soup.find("div", id="exch_table_container")
+    frag = thediv.find("table")
+    rows = frag.findAll("tr")
+    data = [[td.findChildren(text=True) for td in tr.findAll("td")] for tr in rows]
+    rates_retrieved = []
+    for currency in data[1:]:
+        if len(currency) > 2:
+            out = Rate(codeiso=currency[1][0].strip()
+                      # , codenum=currency[2][0].strip().zfill(3)
+                       , multiply=int(currency[2][0].strip())
+                       , buy_exchange=stringToDecimal(currency[4][0].strip())
+                       , middle=stringToDecimal(currency[5][0].strip())
+                       , sell_exchange=stringToDecimal(currency[6][0].strip())
+                       , buy_cc=stringToDecimal(currency[3][0].strip())
+                       , sell_cc=stringToDecimal(currency[7][0].strip())
+
+                       )
+            rates_retrieved.append(out.__dict__)
+
+
+    bank = Bank(rates=rates_retrieved,bankname="HPB",statusdetail=info,fetchurl=url)
+    return bank
+
 

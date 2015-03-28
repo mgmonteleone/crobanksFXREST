@@ -56,7 +56,7 @@ def returnJSON(data):
 
 def stringToDecimal(string):
     if type(string) in (str,unicode):
-        return Decimal(string.replace(",","."))
+        return Decimal(string.replace(",",".").replace("-","0"))
     else:
         print type(string)
         return 0

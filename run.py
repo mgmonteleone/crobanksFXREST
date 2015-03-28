@@ -1,6 +1,6 @@
 # coding=UTF-8
 from xmlbased import get_erste_today, get_pbz_today, get_otp_today
-from htmlbased import get_rba_today, get_hypo_today
+from htmlbased import get_rba_today, get_hypo_today, get_hpb_today
 from fixwidthbased import get_zaba_today, get_hnb_today, get_splitska_today
 from library import *
 from flask import Flask
@@ -23,7 +23,8 @@ def listavail():
         {"Hrvatska Narodna Banka": "/hnb"},
         {"Raiffaisen Banka": "/rba"},
         {"SOCIETE GENERALE- SPLITSKA BANKA d.d. Split": "/splitska"},
-         {"HYPO ALPE-ADRIA-BANK d.d. Zagreb": "/hypo"}
+        {"HYPO ALPE-ADRIA-BANK d.d. Zagreb": "/hypo"},
+        {"HRVATSKA POŠTANSKA BANKA d.d. Zagreb": "/hpb"}
     ]
     return simplejson.dumps(avail,encoding="UTF-8")
 
@@ -97,6 +98,9 @@ def getbank(bank):
     if bank in ["hypo","all"]:
         hypo = get_hypo_today()
         banks.append(hypo.__dict__)
+    if bank in ["hpb","all"]:
+        hpb = get_hpb_today()
+        banks.append(hpb.__dict__)
 
     fxdata = FxData(
        banks =banks
