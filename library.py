@@ -5,6 +5,8 @@ from decimal import *
 from bson import json_util
 import httplib2, time
 import ssl
+from StringIO import StringIO
+
 from functools import wraps
 class Rate():
     def __init__(self,codenum=None
@@ -109,3 +111,29 @@ def sslwrap(func):
     return bar
 
 
+class FXdataFile:
+    responselines = StringIO()
+    info = dict()
+    status = int()
+
+    def __init__(self, url):
+        """
+        Fetches a text file from the sent url, and returns a StringIO filelike object, as well as a dict of status info.
+        Users the caching http fetcher which uses in  memory caching over the last 15 minutes.
+
+        :rtype : StringIO, dict
+        :param url: The url to fetch the file
+        :return: A stringIO object of the fetched file content, and a dict of status info
+        """
+        response = fetch(url)
+        # An dict with all response information is first.
+        self.info = response[0]
+        self.status = self.info["status"]
+        # The actual content is next
+        responsedata = response[1]
+        # Create an empty virtual file
+        self.responselines = StringIO()
+        # Write the content of the fetch to it.
+        self.responselines.write(responsedata)
+        # return the file object to the beginning for reading later.
+        self.responselines.seek(0)

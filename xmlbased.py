@@ -1,23 +1,19 @@
 __author__ = 'matthewgmonteleone'
 from urllib2 import urlopen, URLError
 import xmltodict
-url = "http://local.erstebank.hr/alati/SaveAsXML.aspx?ime=TL_20150310.xml"
 from library import *
 from decimal import *
-import simplejson
-
-
 
 def get_erste_today():
     baseurl = "http://local.erstebank.hr/alati/SaveAsXML.aspx?ime=TL_"
     today = datetime.now().strftime('%Y%m%d')
-    #today = "20150104"
     url = baseurl+today+".xml"
     try:
-        response = urlopen(url)
-        code = response.getcode()
-        info = response.info()
-        responsedata = response.read()
+
+        response = FXdataFile(url)
+        code = response.status
+        info = response.info
+        responsedata = response.responselines.read()
         if responsedata in 'Neispravno formiran zahtjev.':
             raise URLError(reason="No data is available for the date got: " + responsedata)
         try:
@@ -52,10 +48,10 @@ def get_pbz_today():
     baseurl = url="http://www.pbz.hr/Downloads/PBZteclist.xml"
     url = baseurl
     try:
-        response = urlopen(url)
-        code = response.getcode()
-        info = response.info()
-        responsedata = response.read()
+        response = FXdataFile(url)
+        code = response.status
+        info = response.info
+        responsedata = response.responselines.read()
         if responsedata in 'Neispravno formiran zahtjev.':
             raise URLError(reason="No data is available for the date got: " + responsedata)
         try:
@@ -93,10 +89,10 @@ def get_otp_today():
     #today = "20150104"
     url = baseurl+today+".xml"
     try:
-        response = urlopen(url)
-        code = response.getcode()
-        info = response.info()
-        responsedata = response.read()
+        response = FXdataFile(url)
+        code = response.status
+        info = response.info
+        responsedata = response.responselines.read()
         if responsedata in 'Lista ne postoji':
             raise URLError(reason="No data is available for the date got: " + responsedata)
         try:
