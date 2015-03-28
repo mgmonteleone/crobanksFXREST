@@ -4,14 +4,41 @@ from htmlbased import get_rba_today, get_hypo_today, get_hpb_today
 from txtbased import get_zaba_today, get_hnb_today, get_splitska_today, get_sber_today
 from library import *
 from flask import Flask
-from flask import make_response, jsonify, send_from_directory
+from flask import make_response, jsonify, request
 import simplejson
 from flask_swagger import swagger
-
+from werkzeug.contrib.cache import SimpleCache
+import datetime
 app = Flask(__name__)
 
+CACHE_TIMEOUT = 15*60
 
-app = Flask(__name__)
+cache = SimpleCache()
+
+class cached(object):
+
+    def __init__(self, timeout=None):
+        self.timeout = timeout or CACHE_TIMEOUT
+
+    def __call__(self, f):
+        def decorator(*args, **kwargs):
+            response = cache.get(request.path)
+            if response is None:
+                response = f(*args, **kwargs)
+                cache.set(request.path, response, self.timeout)
+                response.headers["X-is-cached"] = False
+            else:
+                response.headers["X-is-cached"] = True
+            return response
+        return decorator
+
+@app.after_request
+def add_header(response):
+    response.cache_control.max_age = 15*60
+    response.add_etag()
+    response.expires = datetime.datetime.now() + datetime.timedelta(minutes=15)
+    return response
+
 
 @app.route("/")
 def listavail():
@@ -39,6 +66,7 @@ def send_js(path):
 
 
 @app.route("/<bank>/")
+@cached()
 def getbank(bank):
     """
     Data per bank
