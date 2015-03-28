@@ -15,10 +15,10 @@ def get_rba_today():
     """
     url = "https://www.rba.hr/wps/public-web/aktualna-tecajna-lista"
     section = "portlet_aktualnaTecajnaLista_WAR_wps#publicweb#rba_bank_hrportlet"
-    page = fetch(url)
-    soup = BeautifulSoup(page[1])
-    info = page[0]
-    if info["status"] not in ("200","304"):
+    page = FXdataFile(url)
+    soup = BeautifulSoup(page.responselines.read())
+    info = page.info
+    if page.status not in ("200","304"):
         bank= Bank(rates=None,bankname="RBA",fetchstatus="ERROR",statusdetail=info
                     ,fetchurl=url)
         return bank
@@ -57,10 +57,10 @@ def get_hypo_today():
     :return: Bank object.
     """
     url = "http://web.hypo-alpe-adria.hr/bank/tecajna.asp?Godina=&Broj="
-    page = fetch(url)
-    soup = BeautifulSoup(page[1])
-    info = page[0]
-    if info["status"] not in ("200","304"):
+    page = FXdataFile(url)
+    soup = BeautifulSoup(page.responselines.read())
+    info = page.info
+    if page.status not in ("200","304"):
         bank= Bank(rates=None,bankname="HYPO",fetchstatus="ERROR",statusdetail=info
                     ,fetchurl=url)
         return bank
@@ -93,6 +93,7 @@ def get_hypo_today():
     bank = Bank(rates=rates_retrieved,bankname="HYPO",statusdetail=info,fetchurl=url)
     return bank
 
+
 def get_hpb_today():
     """
     Retrieves the current days exchange rates from the hypo web site, returns bank object
@@ -100,10 +101,10 @@ def get_hpb_today():
     :return: Bank object.
     """
     url = "http://www.hpb.hr/?hr=mod.exchange-rates"
-    page = fetch(url)
-    soup = BeautifulSoup(page[1])
-    info = page[0]
-    if info["status"] not in ("200","304"):
+    page = FXdataFile(url)
+    soup = BeautifulSoup(page.responselines.read())
+    info = page.info
+    if page.status not in ("200","304"):
         bank= Bank(rates=None,bankname="HPB",fetchstatus="ERROR",statusdetail=info
                     ,fetchurl=url)
         return bank
